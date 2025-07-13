@@ -1,0 +1,15 @@
+package Day2_Constructors;
+
+public class ProductApp {
+    public static void main(String[] args) {
+        ProductInventory p1 = new ProductInventory("Laptop", 75000);
+        ProductInventory p2 = new ProductInventory("Smartphone", 29999);
+        ProductInventory p3 = new ProductInventory("Headphones", 1999);
+
+        p1.displayProductDetails();
+        p2.displayProductDetails();
+        p3.displayProductDetails();
+
+        ProductInventory.displayTotalProducts();
+    }
+}

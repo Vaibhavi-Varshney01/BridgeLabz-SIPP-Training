@@ -1,0 +1,25 @@
+package com.gla;
+import java.util.*;
+public class Animal{
+	int leg;
+	int hand;
+	
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(hand, leg);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Animal)) {
+			return false;
+		}
+		Animal other = (Animal) obj;
+		return hand == other.hand && leg == other.leg;
+	}
+}

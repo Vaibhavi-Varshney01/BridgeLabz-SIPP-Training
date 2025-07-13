@@ -1,0 +1,95 @@
+package Day4_Aggregation;
+import java.util.ArrayList;
+
+//Product class
+class Product {
+ String name;
+ double price;
+
+ Product(String name, double price) {
+     this.name = name;
+     this.price = price;
+ }
+
+ void display() {
+     System.out.println("Product: " + name + ", Price: ₹" + price);
+ }
+}
+
+//Order class - Aggregates Products
+class Order {
+ int orderId;
+ ArrayList<Product> products;
+ static int idCounter = 1;
+
+ Order() {
+     this.orderId = idCounter++;
+     products = new ArrayList<>();
+ }
+
+ void addProduct(Product p) {
+     products.add(p);
+ }
+
+ void showOrderDetails() {
+     System.out.println("\nOrder ID: " + orderId);
+     double total = 0;
+     for (Product p : products) {
+         p.display();
+         total += p.price;
+     }
+     System.out.println("Total Amount: ₹" + total);
+ }
+}
+
+//Customer class - Communicates via Orders
+class Customer {
+ String name;
+ ArrayList<Order> orders;
+
+ Customer(String name) {
+     this.name = name;
+     orders = new ArrayList<>();
+ }
+
+ void placeOrder(Order o) {
+     orders.add(o);
+     System.out.println("\n" + name + " placed Order ID: " + o.orderId);
+ }
+
+ void showMyOrders() {
+     System.out.println("\nCustomer: " + name + " - Order History:");
+     for (Order o : orders) {
+         o.showOrderDetails();
+     }
+ }
+}
+
+//Main class
+public class ECommerce {
+ public static void main(String[] args) {
+     // Create some products
+     Product p1 = new Product("Laptop", 55000);
+     Product p2 = new Product("Smartphone", 20000);
+     Product p3 = new Product("Earbuds", 2000);
+
+     // Create a customer
+     Customer c1 = new Customer("Vaibhavi");
+
+     // First order
+     Order order1 = new Order();
+     order1.addProduct(p1);
+     order1.addProduct(p3);
+
+     // Second order
+     Order order2 = new Order();
+     order2.addProduct(p2);
+
+     // Customer places orders
+     c1.placeOrder(order1);
+     c1.placeOrder(order2);
+
+     // Show customer's order history
+     c1.showMyOrders();
+ }
+}

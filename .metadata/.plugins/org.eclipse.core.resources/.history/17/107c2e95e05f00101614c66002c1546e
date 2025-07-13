@@ -1,0 +1,74 @@
+package Day2_ConstructorsAccessModifiers;
+public class UniversityApp {
+
+    // 🎓 Base Class - Student
+    static class Student {
+        public int rollNumber;         // public → can be accessed anywhere
+        protected String name;         // protected → accessible in subclass
+        private double CGPA;           // private → only accessible through methods
+
+        // Constructor
+        public Student(int rollNumber, String name, double CGPA) {
+            this.rollNumber = rollNumber;
+            this.name = name;
+            this.CGPA = CGPA;
+        }
+
+        // Public methods to access private CGPA
+        public double getCGPA() {
+            return CGPA;
+        }
+
+        public void setCGPA(double newCGPA) {
+            if (newCGPA >= 0 && newCGPA <= 10) {
+                this.CGPA = newCGPA;
+            } else {
+                System.out.println("❌ Invalid CGPA. Must be between 0 and 10.");
+            }
+        }
+
+        public void displayDetails() {
+            System.out.println("\n--- Student Details ---");
+            System.out.println("Roll Number : " + rollNumber);
+            System.out.println("Name        : " + name);
+            System.out.println("CGPA        : " + getCGPA());
+        }
+    }
+
+    // 🎓 Subclass - PostgraduateStudent
+    static class PostgraduateStudent extends Student {
+
+        private String thesisTopic;
+
+        public PostgraduateStudent(int rollNumber, String name, double CGPA, String thesisTopic) {
+            super(rollNumber, name, CGPA);
+            this.thesisTopic = thesisTopic;
+        }
+
+        public void displayPGDetails() {
+            System.out.println("\n--- PG Student Details ---");
+            System.out.println("Roll Number   : " + rollNumber);   // public
+            System.out.println("Name          : " + name);         // protected (accessible here)
+            System.out.println("CGPA          : " + getCGPA());    // private (through getter)
+            System.out.println("Thesis Topic  : " + thesisTopic);
+        }
+    }
+
+    // 🔸 Main Method
+    public static void main(String[] args) {
+        // Base student object
+        Student s1 = new Student(101, "Vaibhavi", 8.6);
+        s1.displayDetails();
+
+        // Modifying CGPA
+        s1.setCGPA(9.1);
+        s1.displayDetails();
+
+        // PG Student object
+        PostgraduateStudent pg = new PostgraduateStudent(202, "Aryan", 9.4, "AI in Healthcare");
+        pg.displayPGDetails();
+
+        // Trying to access private CGPA directly (uncomment to see error)
+        // System.out.println(pg.CGPA); ❌ Not allowed (private)
+    }
+}

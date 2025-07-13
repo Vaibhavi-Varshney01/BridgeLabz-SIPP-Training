@@ -1,0 +1,175 @@
+package Workshop;
+interface Graded {
+    void assignGrade(Student student, Course course, double grade);
+}
+
+abstract class Student {
+    private String name;
+    private String studentID;
+    private float GPA;
+    private Enrollment[] enrollments;
+    private int enrollmentCount = 0;
+
+    public Student(String name, String studentID) {
+        this.name = name;
+        this.studentID = studentID;
+        this.enrollments = new Enrollment[10]; // max 10 courses
+    }
+
+    public void enroll(Course course) {
+        Enrollment e = new Enrollment(this, course);
+        if (enrollmentCount < enrollments.length) {
+            enrollments[enrollmentCount++] = e;
+            course.addStudent(this);
+        }
+    }
+
+    public void updateGPA() {
+        float totalPoints = 0;
+        int totalCourses = 0;
+        for (int i = 0; i < enrollmentCount; i++) {
+            if (enrollments[i].getGrade() >= 0) {
+                totalPoints += enrollments[i].getGrade();
+                totalCourses++;
+            }
+        }
+        if (totalCourses > 0)
+            GPA = totalPoints / totalCourses;
+    }
+
+    public String getTranscript() {
+        String result = "Transcript for " + name + " (" + studentID + ")\n";
+        for (int i = 0; i < enrollmentCount; i++) {
+            result += "- " + enrollments[i].getCourse().getCourseName() +
+                      ": Grade " + enrollments[i].getGrade() + "\n";
+        }
+        result += "GPA: " + GPA + "\n";
+        return result;
+    }
+
+    public Enrollment[] getEnrollments() {
+        return enrollments;
+    }
+
+    public int getEnrollmentCount() {
+        return enrollmentCount;
+    }
+
+    public double getGPA() {
+        return GPA;
+    }
+}
+
+class Undergraduate extends Student {
+    public Undergraduate(String name, String studentID) {
+        super(name, studentID);
+    }
+}
+
+class PostGraduate extends Student {
+    public PostGraduate(String name, String studentID) {
+        super(name, studentID);
+    }
+}
+
+class Course {
+    private String courseID;
+    private String courseName;
+    private Faculty faculty;
+    private Student[] enrolledStudents;
+    private int studentCount = 0;
+
+    public Course(String courseID, String courseName, Faculty faculty) {
+        this.courseID = courseID;
+        this.courseName = courseName;
+        this.faculty = faculty;
+        this.enrolledStudents = new Student[10]; // max 10 students
+        faculty.assignCourse(this);
+    }
+
+    public void addStudent(Student student) {
+        if (studentCount < enrolledStudents.length) {
+            enrolledStudents[studentCount++] = student;
+        }
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+}
+
+class Faculty implements Graded {
+    private String name;
+    private String facultyID;
+    private Course[] assignedCourses;
+    private int courseCount = 0;
+
+    public Faculty(String name, String facultyID) {
+        this.name = name;
+        this.facultyID = facultyID;
+        this.assignedCourses = new Course[5]; // max 5 courses
+    }
+
+    public void assignCourse(Course course) {
+        if (courseCount < assignedCourses.length) {
+            assignedCourses[courseCount++] = course;
+        }
+    }
+
+    public void assignGrade(Student student, Course course, double grade) {
+        Enrollment[] enrollments = student.getEnrollments();
+        for (int i = 0; i < student.getEnrollmentCount(); i++) {
+            if (enrollments[i].getCourse() == course) {
+                enrollments[i].setGrade(grade);
+                student.updateGPA();
+                return;
+            }
+        }
+    }
+}
+
+class Enrollment {
+    private Student student;
+    private Course course;
+    private double grade = -1;
+
+    public Enrollment(Student student, Course course) {
+        this.student = student;
+        this.course = course;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public double getGrade() {
+        return grade;
+    }
+
+    public void setGrade(double grade) {
+        this.grade = grade;
+    }
+}
+
+public class UniversityEnrollmentSys {
+    public static void main(String[] args) {
+        Faculty profSharma = new Faculty("Prof. Sharma", "F001");
+
+        Course oopCourse = new Course("C101", "OOP Concepts", profSharma);
+        Course dbCourse = new Course("C102", "Database Systems", profSharma);
+
+        Student vaibhavi = new Undergraduate("Vaibhavi", "S001");
+        Student Priya = new PostGraduate("Priya", "S002");
+
+        vaibhavi.enroll(oopCourse);
+        vaibhavi.enroll(dbCourse);
+        Priya.enroll(oopCourse);
+
+        profSharma.assignGrade(vaibhavi, oopCourse, 9.0);
+        profSharma.assignGrade(vaibhavi, dbCourse, 8.0);
+        profSharma.assignGrade(Priya, oopCourse, 8.5);
+
+        System.out.println(vaibhavi.getTranscript());
+        System.out.println(Priya.getTranscript());
+    }
+}

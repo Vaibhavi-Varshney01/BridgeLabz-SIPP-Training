@@ -1,0 +1,9 @@
+package BinarySearch.java;
+import java.util.*;
+public class BinarySearch{
+	public static void main(String [] args) {
+		String name = new String("John");
+		String name1 = "John";
+		System.out.println(name == name1);
+	}
+}

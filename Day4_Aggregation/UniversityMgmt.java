@@ -1,0 +1,93 @@
+package Day4_Aggregation;
+import java.util.*;
+ 
+class Faculty {
+    String name;
+
+    Faculty(String name) {
+        this.name = name;
+    }
+
+    void display() {
+        System.out.println("Faculty: " + name);
+    }
+}
+ 
+class Department {
+    String deptName;
+
+    Department(String deptName) {
+        this.deptName = deptName;
+    }
+
+    void display() {
+        System.out.println("Department: " + deptName);
+    }
+}
+ 
+class University {
+    String name;
+    ArrayList<Department> departments;
+    ArrayList<Faculty> faculties;
+
+    University(String name) {
+        this.name = name;
+        departments = new ArrayList<>();
+        faculties = new ArrayList<>();
+    }
+
+    void addDepartment(String deptName) {
+        departments.add(new Department(deptName));
+    }
+
+    void addFaculty(Faculty faculty) {
+        faculties.add(faculty);
+    }
+
+    void showDetails() {
+        System.out.println("University: " + name);
+        System.out.println("Departments:");
+        for (Department d : departments) {
+            d.display();
+        }
+        System.out.println("Faculties:");
+        for (Faculty f : faculties) {
+            f.display();
+        }
+    }
+
+    void deleteUniversity() {
+        System.out.println("\nDeleting University: " + name + " ...");
+        departments.clear();   
+        faculties.clear();     
+        System.out.println("All departments deleted (Composition)");
+    }
+}
+
+ 
+public class UniversityMgmt {
+    public static void main(String[] args) {
+         
+        Faculty f1 = new Faculty("Dr. Vaibhavi");
+        Faculty f2 = new Faculty("Prof. Rohan");
+ 
+        University gla = new University("GLA University");
+ 
+        gla.addDepartment("Computer Science");
+        gla.addDepartment("Mechanical");
+ 
+        gla.addFaculty(f1);
+        gla.addFaculty(f2);
+
+         
+        gla.showDetails();
+
+        
+        gla.deleteUniversity();
+
+ 
+        System.out.println("\nIndependent Faculties after University deletion:");
+        f1.display();
+        f2.display();
+    }
+}

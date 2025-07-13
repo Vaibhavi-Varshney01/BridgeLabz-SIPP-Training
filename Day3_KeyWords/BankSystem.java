@@ -1,0 +1,52 @@
+package Day3_KeyWords;
+public class BankSystem {
+
+    static class BankAccount {
+        private final String accountNumber;
+ 
+        private String accountHolderName;
+ 
+        private double balance;
+ 
+        static String bankName = "State Bank of Java";
+        static int totalAccounts = 0;
+
+        
+        public BankAccount(String accountHolderName, String accountNumber, double balance) {
+            this.accountHolderName = accountHolderName;
+            this.accountNumber = accountNumber;
+            this.balance = balance;
+            totalAccounts++;
+        }
+
+        
+        public static void getTotalAccounts() {
+            System.out.println("Total Accounts in " + bankName + ": " + totalAccounts);
+        }
+ 
+        public void displayDetails() {
+            if (this instanceof BankAccount) {
+                System.out.println("\n--- Account Details ---");
+                System.out.println("Bank Name     : " + bankName);
+                System.out.println("Account Number: " + accountNumber);
+                System.out.println("Account Holder: " + accountHolderName);
+                System.out.println("Balance       : ₹" + balance);
+            } else {
+                System.out.println("Not a valid BankAccount instance.");
+            }
+        }
+    }
+ 
+    public static void main(String[] args) {
+      
+        BankAccount acc1 = new BankAccount("Vaibhavi", "SBJ1001", 15000);
+        BankAccount acc2 = new BankAccount("Aryan", "SBJ1002", 25000);
+ 
+        acc1.displayDetails();
+        acc2.displayDetails();
+ 
+        BankAccount.getTotalAccounts();
+ 
+        System.out.println("\nIs acc1 a BankAccount? " + (acc1 instanceof BankAccount));
+    }
+}
